@@ -15,14 +15,14 @@
   * dimensions (These represent the character's size in the video game)
   * destroy() // prototype method that returns: `${this.name} was removed from the game.`
 */
-function GameObject(atrributes) {
+function GameObject(attributes) {
   this.createdAt = attributes.createdAt;
   this.name = attributes.name;
   this.dimensions = attributes.dimensions;
 }
 
 GameObject.prototype.destroy = function() {
-  console.log(`${this.name} was removed from the game.`);
+  return `${this.name} was removed from the game.`;
 }
 
 /*
@@ -33,14 +33,16 @@ GameObject.prototype.destroy = function() {
 */
 function CharacterStats(childAttributes) {
   GameObject.call(this, childAttributes);
-  this.healthPoints = healthPoints;
-}
-
-CharacterStats.prototype.takeDamage = function() {
-  console.log(`${this.name} took damage.`);
+  this.healthPoints = childAttributes.healthPoints;
 }
 
 CharacterStats.prototype = Object.create(GameObject.prototype);
+
+CharacterStats.prototype.takeDamage = function() {
+  return `${this.name} took damage.`;
+}
+
+
 
 /*
   === Humanoid (Having an appearance or character resembling that of a human.) ===
@@ -52,6 +54,8 @@ CharacterStats.prototype = Object.create(GameObject.prototype);
   * should inherit takeDamage() from CharacterStats
 */
 
+
+
 function Humanoid(grandchildAtts) {
   CharacterStats.call(this, grandchildAtts);
   this.team = grandchildAtts.team;
@@ -59,16 +63,36 @@ function Humanoid(grandchildAtts) {
   this.language = grandchildAtts.language;
 }
 
+Humanoid.prototype = Object.create(CharacterStats.prototype);
+
 Humanoid.prototype.greet = function() {
-  console.log(`${this.name} offers a greeting in ${this.language}.`);
+  return `${this.name} offers a greeting in ${this.language}.`;
 }
  
-Humanoid.prototype = Object.create(CharacterStats.prototype);
+function Hero(ggcAtts) {
+  Humanoid.call(this, ggcAtts);
+  this.superPower = ggcAtts.superPower;
+}
+
+Hero.prototype = Object.create(Humanoid.prototype);
+
+function Villain(ggcAtts) {
+  Humanoid.call(this, ggcAtts);
+  this.superPower = ggcAtts.superPower;
+  this.motive = ggcAtts.motive;
+}
+
+Villain.prototype = Object.create(Humanoid.prototype);
+
+
+
 /*
   * Inheritance chain: GameObject -> CharacterStats -> Humanoid
   * Instances of Humanoid should have all of the same properties as CharacterStats and GameObject.
   * Instances of CharacterStats should have all of the same properties as GameObject.
 */
+
+
 
 // Test you work by un-commenting these 3 objects and the list of console logs below:
 
@@ -139,3 +163,45 @@ Humanoid.prototype = Object.create(CharacterStats.prototype);
   // * Create Villain and Hero constructor functions that inherit from the Humanoid constructor function.  
   // * Give the Hero and Villains different methods that could be used to remove health points from objects which could result in destruction if health gets to 0 or drops below 0;
   // * Create two new objects, one a villain and one a hero and fight it out with methods!
+
+const batman = new Hero({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2.6,
+    width: 2,
+    height: 4.5,
+  },
+  healthPoints: 50,
+  name: 'Batman',
+  team: 'good guys',
+  weapons: [
+    'bat-bombs',
+    'The Bat Pod',
+  ],
+  language: 'English',
+})
+
+const joker = new Villain({
+  createdAt: new Date(),
+  dimensions: {
+    length: 2.2,
+    width: 1.8,
+    height: 4,
+  },
+  healthPoints: 50,
+  name: 'Joker',
+  team: 'bad guys',
+  weapons: [
+    'exploding cigars',
+    'cane',
+  ],
+  language: 'English',
+})
+
+console.log(batman.name);
+console.log(batman.greet());
+
+console.log(joker.weapons);
+console.log(joker.takeDamage());
+
+  
