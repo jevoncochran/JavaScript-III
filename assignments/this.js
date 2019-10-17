@@ -39,19 +39,36 @@ singer.sing();
 // Principle 3
 
 // code example for New Binding
+function Animal(name, species, sound) {
+    this.name = name;
+    this.species = species;
+    this.sound = sound;
+}
+
+let simba = new Animal ('Simba', 'lion', 'roar!!')
+
+console.log(simba.sound);
 
 // Principle 4
 
 // code example for Explicit Binding
-let singer = {
-    name: 'Lil Nas X',
-    hometown: 'Atlanta',
-    lyrics: 'I\'m gonna take my horse to the Old Town Road',
+
+let bernie = {
+    name: 'Bernie Sanders',
+    politics: 'progressive',
+    phrase: 'I wrote the damn bill!'
 }
 
-function sing() {
-    console.log(this.lyrics);
+let biden = {
+    name: 'Joe Biden',
+    politics: 'moderate',
+    phrase: 'I can beat Trump!',
 }
 
-sing.call(singer);
+function giveSpeech() {
+    console.log(this.phrase);
+}
+
+giveSpeech.call(bernie);
+giveSpeech.call(biden);
 
